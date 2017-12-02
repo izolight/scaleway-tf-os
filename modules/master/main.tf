@@ -3,7 +3,7 @@ variable "image" {}
 variable "type" {}
 
 resource "scaleway_server" "masters" {
-    count   = "2"
+    count   = "3"
     image   = "${var.image}"
     type    = "${var.type}"
     name    = "master-${count.index}"
