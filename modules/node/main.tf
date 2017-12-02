@@ -31,7 +31,3 @@ resource "scaleway_server" "nodes" {
         size_in_gb = 50
     }
 }
-
-resource "scaleway_ip" "infra" {
-    server = "${scaleway_server.infra.id}"
-}
