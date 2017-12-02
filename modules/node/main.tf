@@ -22,6 +22,7 @@ resource "scaleway_server" "nodes" {
     image   = "${var.image}"
     type    = "${var.type}"
     name    = "node-${count.index}"
+    dynamic_ip_required = true
     enable_ipv6 = true
 
     tags = ["node"]

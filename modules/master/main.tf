@@ -7,6 +7,7 @@ resource "scaleway_server" "masters" {
     image   = "${var.image}"
     type    = "${var.type}"
     name    = "master-${count.index}"
+    dynamic_ip_required = true
     enable_ipv6 = true
 
     tags = ["master"]
