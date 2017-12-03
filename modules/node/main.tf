@@ -2,6 +2,8 @@ variable "image" {}
 
 variable "type" {}
 
+variable "domain" {}
+
 resource "scaleway_server" "infra" {
     image   = "${var.image}"
     type    = "${var.type}"
@@ -21,7 +23,7 @@ resource "scaleway_ip" "infra" {
 }
 
 resource "digitalocean_record" "infra" {
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "infra.os"
     value       = "${scaleway_server.infra.id}.pub.cloud.scaleway.com."
@@ -29,7 +31,7 @@ resource "digitalocean_record" "infra" {
 }
 
 resource "digitalocean_record" "infra_int" {
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "infra.int.os"
     value       = "${scaleway_server.infra.id}.priv.cloud.scaleway.com."
@@ -37,7 +39,7 @@ resource "digitalocean_record" "infra_int" {
 }
 
 resource "digitalocean_record" "lb_main" {
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "A"
     name        = "os"
     value       = "${scaleway_server.infra.public_ip}"
@@ -45,10 +47,10 @@ resource "digitalocean_record" "lb_main" {
 }
 
 resource "digitalocean_record" "lb_sub" {
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "*.os"
-    value       = "infra.os.***REMOVED***."
+    value       = "infra.os.${var.domain}."
     ttl         = "3600"
 }
 
@@ -71,7 +73,7 @@ resource "scaleway_server" "nodes" {
 
 resource "digitalocean_record" "nodes" {
     count       = "3"
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "node-${count.index}.os"
     value       = "${scaleway_server.nodes.*.id[count.index]}.pub.cloud.scaleway.com."
@@ -80,7 +82,7 @@ resource "digitalocean_record" "nodes" {
 
 resource "digitalocean_record" "nodes_int" {
     count       = "3"
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "node-${count.index}.int.os"
     value       = "${scaleway_server.nodes.*.id[count.index]}.priv.cloud.scaleway.com."

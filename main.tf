@@ -2,6 +2,8 @@ variable "commercial_type" {
   default = "VC1S"
 }
 
+variable "domain" {}
+
 variable "architectures" {
   default = {
     C1   = "arm"
@@ -25,6 +27,7 @@ provider "digitalocean" {}
 module "master" {
     source  = "./modules/master"
 
+    domain  = "${var.domain}"
     type    = "${var.commercial_type}"
     image   = "${data.scaleway_image.centos.id}"
 }
@@ -32,6 +35,7 @@ module "master" {
 module "node" {
     source  = "./modules/node"
 
+    domain  = "${var.domain}"
     type    = "VC1M"
     image   = "${data.scaleway_image.centos.id}"   
 }

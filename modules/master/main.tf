@@ -2,6 +2,8 @@ variable "image" {}
 
 variable "type" {}
 
+variable "domain" {}
+
 resource "scaleway_server" "masters" {
     count   = "3"
     image   = "${var.image}"
@@ -15,7 +17,7 @@ resource "scaleway_server" "masters" {
 
 resource "digitalocean_record" "masters" {
     count       = "3"
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "master-${count.index}.os"
     value       = "${scaleway_server.masters.*.id[count.index]}.pub.cloud.scaleway.com."
@@ -24,7 +26,7 @@ resource "digitalocean_record" "masters" {
 
 resource "digitalocean_record" "masters_int" {
     count       = "3"
-    domain      = "***REMOVED***"
+    domain      = "${var.domain}"
     type        = "CNAME"
     name        = "master-${count.index}.int.os"
     value       = "${scaleway_server.masters.*.id[count.index]}.priv.cloud.scaleway.com."
