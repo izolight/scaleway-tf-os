@@ -22,3 +22,11 @@ resource "digitalocean_record" "masters" {
     ttl         = "3600"
 }
 
+resource "digitalocean_record" "masters_int" {
+    count       = "3"
+    domain      = "***REMOVED***"
+    type        = "CNAME"
+    name        = "master-${count.index}.int.os"
+    value       = "${scaleway_server.masters.*.id[count.index]}.priv.cloud.scaleway.com."
+    ttl         = "3600"
+}

@@ -28,6 +28,14 @@ resource "digitalocean_record" "infra" {
     ttl         = "3600"
 }
 
+resource "digitalocean_record" "infra_int" {
+    domain      = "***REMOVED***"
+    type        = "CNAME"
+    name        = "infra.int.os"
+    value       = "${scaleway_server.infra.id}.priv.cloud.scaleway.com."
+    ttl         = "3600"
+}
+
 resource "digitalocean_record" "lb_main" {
     domain      = "***REMOVED***"
     type        = "A"
@@ -67,5 +75,14 @@ resource "digitalocean_record" "nodes" {
     type        = "CNAME"
     name        = "node-${count.index}.os"
     value       = "${scaleway_server.nodes.*.id[count.index]}.pub.cloud.scaleway.com."
+    ttl         = "3600"
+}
+
+resource "digitalocean_record" "nodes_int" {
+    count       = "3"
+    domain      = "***REMOVED***"
+    type        = "CNAME"
+    name        = "node-${count.index}.int.os"
+    value       = "${scaleway_server.nodes.*.id[count.index]}.priv.cloud.scaleway.com."
     ttl         = "3600"
 }
