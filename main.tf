@@ -20,6 +20,7 @@ data "scaleway_image" "centos" {
 }
 
 provider "scaleway" {}
+provider "digitalocean" {}
 
 module "master" {
     source  = "./modules/master"
