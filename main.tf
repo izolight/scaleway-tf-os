@@ -21,7 +21,14 @@ data "scaleway_image" "centos" {
     name            = "CentOS 7.3"
 }
 
-provider "scaleway" {}
+data "scaleway_bootscript" "main" {
+    name = "x86_64 mainline 4.15.11 rev1"
+}
+
+provider "scaleway" {
+    region  = "ams1"
+}
+
 provider "digitalocean" {}
 
 module "master" {
@@ -30,6 +37,7 @@ module "master" {
     domain  = "${var.domain}"
     type    = "${var.commercial_type}"
     image   = "${data.scaleway_image.centos.id}"
+    bootscript = "${data.scaleway_bootscript.main.id}"
 }
 
 module "node" {
@@ -38,4 +46,5 @@ module "node" {
     domain  = "${var.domain}"
     type    = "VC1M"
     image   = "${data.scaleway_image.centos.id}"   
+    bootscript = "${data.scaleway_bootscript.main.id}"
 }

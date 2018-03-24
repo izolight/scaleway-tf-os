@@ -4,8 +4,11 @@ variable "type" {}
 
 variable "domain" {}
 
+variable "bootscript" {}
+
 resource "scaleway_server" "infra" {
     image   = "${var.image}"
+    bootscript = "${var.bootscript}"
     type    = "${var.type}"
     name    = "infra"
     enable_ipv6 = true
@@ -58,6 +61,7 @@ resource "digitalocean_record" "lb_sub" {
 resource "scaleway_server" "nodes" {
     count   = "3"
     image   = "${var.image}"
+    bootscript = "${var.bootscript}"
     type    = "${var.type}"
     name    = "node-${count.index}"
     dynamic_ip_required = true

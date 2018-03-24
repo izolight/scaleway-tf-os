@@ -4,9 +4,12 @@ variable "type" {}
 
 variable "domain" {}
 
+variable "bootscript" {}
+
 resource "scaleway_server" "masters" {
     count   = "3"
     image   = "${var.image}"
+    bootscript = "${var.bootscript}"
     type    = "${var.type}"
     name    = "master-${count.index}"
     dynamic_ip_required = true
